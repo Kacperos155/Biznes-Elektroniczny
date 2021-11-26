@@ -1,0 +1,10 @@
+{
+  "name": "scraper",
+  "version-string": "0.0.1",
+  "dependencies": [
+    "cpr",
+    "gumbo",
+    "fmt",
+    "nlohmann-json"
+  ]
+}
