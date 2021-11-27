@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.39, created on 2021-11-26 14:51:01
+/* Smarty version 3.1.39, created on 2021-11-27 01:57:53
   from 'C:\Users\Kacpe\source\repos\- Studia\Biznes Elektroniczny\PrestaShop\admin127wfzetf\themes\new-theme\template\helpers\kpi\kpi.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.39',
-  'unifunc' => 'content_61a0e64599d658_92693807',
+  'unifunc' => 'content_61a18291342029_81359724',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_61a0e64599d658_92693807 (Smarty_Internal_Template $_smarty_tpl) {
+function content_61a18291342029_81359724 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\Users\\Kacpe\\source\\repos\\-Studia\\BiznesElektroniczny\\PrestaShop\\vendor\\smarty\\smarty\\libs\\plugins\\modifier.replace.php','function'=>'smarty_modifier_replace',),));
 ?>
 

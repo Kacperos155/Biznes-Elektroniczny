@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.39, created on 2021-11-26 14:50:30
+/* Smarty version 3.1.39, created on 2021-11-26 23:28:07
   from 'C:\Users\Kacpe\source\repos\- Studia\Biznes Elektroniczny\PrestaShop\admin127wfzetf\themes\default\template\nav.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.39',
-  'unifunc' => 'content_61a0e626a7cf80_77327128',
+  'unifunc' => 'content_61a15f77dc3b57_83535904',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_61a0e626a7cf80_77327128 (Smarty_Internal_Template $_smarty_tpl) {
+function content_61a15f77dc3b57_83535904 (Smarty_Internal_Template $_smarty_tpl) {
 ?><nav class="nav-bar" role="navigation" id="nav-sidebar">
 	<span class="menu-collapse" data-toggle-url="<?php echo $_smarty_tpl->tpl_vars['toggle_navigation_url']->value;?>
 ">

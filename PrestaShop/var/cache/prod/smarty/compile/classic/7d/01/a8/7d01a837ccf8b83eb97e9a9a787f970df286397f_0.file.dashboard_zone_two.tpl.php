@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.39, created on 2021-11-26 14:50:30
+/* Smarty version 3.1.39, created on 2021-11-27 04:07:01
   from 'C:\Users\Kacpe\source\repos\- Studia\Biznes Elektroniczny\PrestaShop\modules\dashgoals\views\templates\hook\dashboard_zone_two.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.39',
-  'unifunc' => 'content_61a0e626102526_27908405',
+  'unifunc' => 'content_61a1a0d5014ff0_08561426',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:./config.tpl' => 1,
   ),
 ),false)) {
-function content_61a0e626102526_27908405 (Smarty_Internal_Template $_smarty_tpl) {
+function content_61a1a0d5014ff0_08561426 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div class="clearfix"></div>
 <?php echo '<script'; ?>
 >

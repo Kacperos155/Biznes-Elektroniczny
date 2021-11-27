@@ -1,0 +1,4 @@
+ID;Aktywny(0 lub 1);Nazwa*;Kategoria nadrzędna;Główna kategoria(0 / 1)
+1;1;Repertuar;;1
+2;1;Dzisiaj;Repertuar;0
+3;1;Familijny;Repertuar;0

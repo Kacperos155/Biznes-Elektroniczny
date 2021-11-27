@@ -6,7 +6,6 @@
 #include <map>
 #include <vector>
 #include <algorithm>
-#include <iostream>
 #include <thread>
 #include <mutex>
 #include <charconv>
@@ -24,11 +23,14 @@ class Scraper
 	std::map<unsigned, Movie> movies{};
 	std::vector<std::thread> threads;
 	std::mutex movie_write;
+	Movie::Time smallest_date{ 100 };
 
 	bool scrapMovie(unsigned ID, std::string&& buffer);
 	bool scrapMovieDetails(GumboNode* node, std::string_view buffer, Movie& movie);
 	bool scrapMovieTimes(GumboNode* node, std::string_view buffer, Movie& movie);
 	bool scrapMoviesID(std::string_view buffer);
+
+	void checkSmallestDate(Movie::Time time);
 
 	template<typename Function>
 	static bool searchForClass(GumboNode* node, std::string_view class_name, std::string_view buffer, Function&& function);
@@ -39,7 +41,8 @@ class Scraper
 
 public:
 	void scrap();
-	std::map<unsigned, Movie>& getMovies();
+	std::vector<Movie> getMovies();
+	const Movie::Time getSmallestTime() const;
 };
 
 

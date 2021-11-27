@@ -109,7 +109,13 @@ bool Scraper::scrapMovie(unsigned ID, std::string&& buffer)
 		{
 			start = body.find("<p>", start) + 3;
 			auto end = body.find("</p>", start);
-			movie.description = extractCleanString(body.substr(start, end - start));
+			auto& desc = movie.description;
+			desc = extractCleanString(body.substr(start, end - start));
+
+			desc.erase(std::remove_if(desc.begin(), desc.end(), [](char c)
+				{
+					return (0 < c) && (c < ' ');
+				}), desc.end());
 		}
 	};
 	if (!searchForClass(html_page->root, "content-row set-3columns", buffer, restrictToContent))
@@ -156,21 +162,6 @@ bool Scraper::scrapMovieDetails(GumboNode* node, std::string_view buffer, Movie&
 	if (!searchForClass(node, "movie-title", buffer, getTitle))
 		return false;
 
-	auto getImage = [&](GumboNode* node)
-	{
-		auto body = getBodyOfTag(node, buffer);
-		auto img_start = body.find(R"(<img src=")");
-		if (img_start != std::string::npos)
-		{
-			img_start += 10;
-			auto img_end = body.find("\"", img_start);
-			movie.image_url = body.substr(img_start, img_end - img_start);
-		}
-		return;
-	};
-	if (!searchForClass(node, "btn-round btn-play show-trailers", buffer, getImage))
-		return false;
-
 	auto getDetails = [&](GumboNode* node)
 	{
 		auto body = getBodyOfTag(node, buffer);
@@ -193,7 +184,16 @@ bool Scraper::scrapMovieDetails(GumboNode* node, std::string_view buffer, Movie&
 	};
 	if (!searchForClass(node, "details", buffer, getDetails))
 		return false;
-	return true;
+
+	auto image_start = buffer.find("https://ftmp.helios.pl/Get/file/mvpstr/");
+	auto image_end = buffer.find("\"", image_start + 1);
+
+	if ((image_start != std::string::npos) && (image_end != std::string::npos))
+	{
+		movie.image_url = buffer.substr(image_start, image_end - image_start);
+		return true;
+	}
+	return false;
 }
 
 bool Scraper::scrapMovieTimes(GumboNode* node, std::string_view buffer, Movie& movie)
@@ -242,6 +242,7 @@ bool Scraper::scrapMovieTimes(GumboNode* node, std::string_view buffer, Movie& m
 				auto minutes = time_text.substr(separator + 1);
 				std::from_chars(minutes.data(), minutes.data() + minutes.size(), time.minutes);
 				movie.times.push_back(time);
+				checkSmallestDate(time);
 			}
 
 			body.remove_prefix(times_it + 1);
@@ -309,8 +310,25 @@ bool Scraper::scrapMoviesID(std::string_view buffer)
 	return true;
 }
 
+void Scraper::checkSmallestDate(Movie::Time time)
+{
+	if (time.month < smallest_date.month) 
+	{
+		smallest_date = time;
+	}
+	else if (time.month == smallest_date.month)
+	{
+		if (time.day < smallest_date.day)
+		{
+			smallest_date = time;
+		}
+	}
+}
+
 void Scraper::scrap()
 {
+	smallest_date.month = 100;
+	smallest_date.day = 100;
 
 	for (int i = 0; i < 12; ++i)
 	{
@@ -329,9 +347,29 @@ void Scraper::scrap()
 	}
 	for (auto& thread : threads)
 		thread.join();
+
+	for (auto& [id, movie] : movies)
+	{
+		movie.image_hash = std::to_string(std::hash<std::string>{}(movie.name));
+	}
 }
 
-std::map<unsigned, Movie>& Scraper::getMovies()
+std::vector<Movie> Scraper::getMovies()
 {
-	return movies;
+	if (!movies.size())
+		return {};
+
+	std::vector<Movie> r_movies;
+	r_movies.reserve(movies.size());
+
+	for (const auto& movie : movies)
+	{
+		r_movies.push_back(movie.second);
+	}
+	return r_movies;
+}
+
+const Movie::Time Scraper::getSmallestTime() const
+{
+	return smallest_date;
 }

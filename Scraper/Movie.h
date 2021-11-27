@@ -10,6 +10,7 @@ struct Movie
 	std::string name{};
 	std::string description{};
 	std::string image_url{};
+	std::string image_hash{};
 	bool dolby = false;
 	bool family_friendly = false;
 	uint8_t from_age{};
@@ -34,10 +35,10 @@ struct Movie
 	{
 		if (this->name != other.name)
 			return false;
-		/*if (this->type != other.type)
+		if (this->type != other.type)
 			return false;
 		if (this->dolby != other.dolby)
-			return false;*/
+			return false;
 		return true;
 	}
 
@@ -73,8 +74,8 @@ inline void to_json(nlohmann::json& j, const Movie& m)
 	{
 		{"ID", m.ID},
 		{"name", m.name}, {"description", m.description},
-		{"image_url", m.image_url}, {"dolby", m.dolby},
-		{"family_friendly", m.family_friendly},
+		{"image_url", m.image_url}, {"image_hash", m.image_hash},
+		{"dolby", m.dolby}, {"family_friendly", m.family_friendly},
 		{"from_age", m.from_age}, {"duration", m.duration},
 		{"type", m.type}, {"time", m.times}
 	};
@@ -86,6 +87,7 @@ inline void from_json(const nlohmann::json& j, Movie& m)
 	j.at("name").get_to(m.name);
 	j.at("description").get_to(m.description);
 	j.at("image_url").get_to(m.image_url);
+	j.at("image_hash").get_to(m.image_hash);
 	j.at("dolby").get_to(m.dolby);
 	j.at("family_friendly").get_to(m.family_friendly);
 	j.at("from_age").get_to(m.from_age);
