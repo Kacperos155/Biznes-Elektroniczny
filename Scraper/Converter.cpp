@@ -19,7 +19,7 @@ bool Converter::generateColumnsCSV(std::filesystem::path filename)
 	fmt::print(csv, format, 4, "Dzisiaj");
 	fmt::print(csv, format, 5, "Familijny");
 	fmt::print("Exported columns to {}\n", filename.string());
-;	return true;
+	;	return true;
 }
 
 bool Converter::generateProductsCSV(std::filesystem::path filename)
@@ -51,7 +51,7 @@ bool Converter::generateProductsCSV(std::filesystem::path filename)
 			format = format_christmas_sale;
 
 		auto price = 26.90f;
-		auto categories = std::string{"Repertuar, "};
+		auto categories = std::string{ "Repertuar, " };
 		if (movie.times[0].day == current_day)
 		{
 			categories += "Strona Główna, ";
@@ -77,10 +77,8 @@ bool Converter::generateProductsCSV(std::filesystem::path filename)
 
 		auto attributes = fmt::format("Czas trwania:{} minut:0:0", movie.duration);
 		attributes += fmt::format(", Od lat:{}:1:0", movie.from_age);
-		if(movie.dolby)
+		if (movie.dolby)
 			attributes += fmt::format(", Dolby Atmos:TAK:2:0");
-		attributes += fmt::format(", Data:00-00:3:0");
-		attributes += fmt::format(", Godzina:00-00:4:0");
 
 		auto description = '\"' + movie.description + '\"';
 
@@ -88,7 +86,7 @@ bool Converter::generateProductsCSV(std::filesystem::path filename)
 	}
 	fmt::print("Exported movies to {}\n", filename.string());
 	return true;
-		
+
 }
 
 bool Converter::generateCombinationsCSV(std::filesystem::path filename, Movie::Time smallest_time)
@@ -102,18 +100,18 @@ bool Converter::generateCombinationsCSV(std::filesystem::path filename, Movie::T
 		fmt::print(fg(fmt::color::red), "ERROR: Can't write to file {}", filename.string());
 	}
 
-	fmt::print(csv, "Indeks produktu; Atrybut(Nazwa:Typ:Pozycja)*; " \
+	fmt::print(csv, "Identyfikator Produktu (ID); Indeks produktu; Atrybut(Nazwa:Typ:Pozycja)*; " \
 		"Wartość(Wartość:Pozycja)*; Wpływ na cenę; Ilość \n");
-	const auto format = std::string_view{ "{};Data:select:3, Godzina:select:4;{};{};250 \n" };
+	const auto format = std::string_view{ "{0};{0};Data:select:3, Godzina:select:4;{1};{2};250 \n" };
 
 	for (const auto& movie : movies)
 	{
 		for (const auto& time : movie.times)
 		{
 			auto orginal_price = 26.90f;
-			auto price = orginal_price;
 			if (movie.family_friendly)
-				price = 23.90f;
+				orginal_price = 23.90f;
+			auto price = orginal_price;
 			auto smallest_price = 14.90f;;
 
 			int day_passed{};
@@ -124,31 +122,31 @@ bool Converter::generateCombinationsCSV(std::filesystem::path filename, Movie::T
 			else
 			{
 				auto older = time.day_of_week;
-				auto younger = time.day_of_week;
+				auto younger = smallest_time.day_of_week;
 				if (older >= younger)
 					day_passed = older - younger;
 				else
 					day_passed = 7 + older - younger;
 			}
 
-			auto date_time_atr = fmt::format("{}-{}:3, {}-{}:4", time.month, time.day, time.hour, time.minutes);
+			auto date_time_atr = fmt::format("{:0>2}-{:0>2}:3, {:0>2}-{:0>2}:4", time.month, time.day, time.hour, time.minutes);
 			if ((time.day_of_week == 1) || (day_passed > 2))
 			{
 				price = smallest_price;
 			}
-			else if(day_passed == 1)
+			else if (day_passed == 1)
 			{
 				price = 22.90f;
 				if (movie.family_friendly)
 					price -= 2.00f;
 			}
-			else
+			else if (day_passed == 2)
 			{
 				price = 18.90f;
 				if (movie.family_friendly)
 					price -= 1.00f;
 			}
-			fmt::print(csv, format, movie.ID, date_time_atr, price - orginal_price);
+			fmt::print(csv, format, movie.ID, date_time_atr, (price - orginal_price) / 1.23f);
 		}
 	}
 
