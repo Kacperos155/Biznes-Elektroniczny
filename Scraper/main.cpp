@@ -119,7 +119,7 @@ int main(int argc,  char** argv)
 		if (!std::filesystem::exists(json_filename))
 		{
 			fmt::print("File {} was not found!\n", json_filename.string());
-			fmt::print(R"(Try execute '{} -D' to create {})", "Scraper.exe", json_filename.string());
+			fmt::print(R"(Try execute '{} -G' to create {})", "Scraper.exe", json_filename.string());
 			fmt::print("\n");
 			return 404;
 		}
